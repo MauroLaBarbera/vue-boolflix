@@ -3,10 +3,10 @@
         <Search @performSearch="filterFilm" />
         <div class="film-list">
             <ul v-for="film in filmList" :key="film.id">
-                <li>{{ film.title }}</li>
-                <li>{{ film.original_title }}</li>
-                <li>{{ film.original_language }}</li>
-                <li>{{ film.vote_average }}</li>
+                <li>Titolo: {{ film.title }}</li>
+                <li>Titolo Originale: {{ film.original_title }}</li>
+                <li>Lingua: {{ film.original_language }}</li>
+                <li>Voto: {{ film.vote_average }}</li>
             </ul>
             <!-- <ul>
                 <li v-for="film in filmList" :key="film.id">
@@ -31,23 +31,17 @@ export default {
     data() {
         return {
             apiURL:
-                'https://api.themoviedb.org/3/search/movie?api_key=6f56cfbbea1125659f4e05bff0a2ff1e&query=ritorno al futuro',
+                'https://api.themoviedb.org/3/search/movie?api_key=6f56cfbbea1125659f4e05bff0a2ff1e&',
             filmList: [],
             loading: true,
-            searchingFilms: '',
+            searchingFilms: 'all',
         };
-    },
-    computed: {
-        filteredFilm() {
-            return this.filmList.filter((e) => {
-                return e.original_title
-                    .toLowerCase()
-                    .includes(this.searchingFilms.toLowerCase());
-            });
-        },
     },
     created() {
         this.getFilm();
+    },
+    updated() {
+        console.log(this.searchingFilms);
     },
     methods: {
         getFilm() {
@@ -55,7 +49,11 @@ export default {
              * Chiamata api
              */
             axios
-                .get(this.apiURL)
+                .get(this.apiURL, {
+                    params: {
+                        query: this.searchingFilms,
+                    },
+                })
                 .then((res) => {
                     console.log(res.data.results);
 
@@ -71,6 +69,8 @@ export default {
             console.log('click', text);
 
             this.searchingFilms = text;
+            this.getFilm();
+            console.log(this.apiURL);
         },
     },
 };
