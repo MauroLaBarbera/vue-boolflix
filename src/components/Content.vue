@@ -21,11 +21,25 @@
                 </li>
                 <li>Voto: {{ film.vote_average }}</li>
             </ul>
-            <!-- <ul>
-                <li v-for="film in filmList" :key="film.id">
-                    <FilmList :info="film"/>
+            <ul v-for="series in seriesList" :key="series.id">
+                <li>Titolo: {{ series.name }}</li>
+                <li>Titolo Originale: {{ series.original_name }}</li>
+                <li>
+                    Lingua:
+                    <img
+                        class="flag"
+                        v-if="series.original_language === 'en'"
+                        src="../assets/img/en.png"
+                    />
+                    <img
+                        class="flag"
+                        v-else-if="series.original_language === 'it'"
+                        src="../assets/img/it.png"
+                    />
+                    <span v-else>{{ series.original_language }}</span>
                 </li>
-            </ul> -->
+                <li>Voto: {{ series.vote_average }}</li>
+            </ul>
         </div>
     </div>
 </template>
@@ -44,14 +58,18 @@ export default {
     data() {
         return {
             apiURL:
-                'https://api.themoviedb.org/3/search/movie?api_key=6f56cfbbea1125659f4e05bff0a2ff1e&',
+                'https://api.themoviedb.org/3/search/movie?api_key=6f56cfbbea1125659f4e05bff0a2ff1e&language=it-IT',
             filmList: [],
+            apiURL2:
+                'https://api.themoviedb.org/3/search/tv?api_key=e99307154c6dfb0b4750f6603256716d&language=it-IT',
+            seriesList: [],
             loading: true,
-            searchingFilms: 'all',
+            searchingFilms: '',
         };
     },
     created() {
         this.getFilm();
+        this.getSeries();
     },
     updated() {
         console.log(this.searchingFilms);
@@ -77,12 +95,33 @@ export default {
                     console.log('Errore', err);
                 });
         },
+        getSeries() {
+            /**
+             * Chiamata api
+             */
+            axios
+                .get(this.apiURL2, {
+                    params: {
+                        query: this.searchingFilms,
+                    },
+                })
+                .then((res) => {
+                    console.log(res.data.results);
+
+                    this.seriesList = res.data.results;
+                    this.loading = false;
+                })
+                .catch((err) => {
+                    console.log('Errore', err);
+                });
+        },
 
         filterFilm(text) {
             console.log('click', text);
 
             this.searchingFilms = text;
             this.getFilm();
+            this.getSeries();
             console.log(this.apiURL);
         },
     },
