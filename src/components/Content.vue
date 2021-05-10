@@ -5,7 +5,20 @@
             <ul v-for="film in filmList" :key="film.id">
                 <li>Titolo: {{ film.title }}</li>
                 <li>Titolo Originale: {{ film.original_title }}</li>
-                <li>Lingua: {{ film.original_language }}</li>
+                <li>
+                    Lingua:
+                    <img
+                        class="flag"
+                        v-if="film.original_language === 'en'"
+                        src="../assets/img/en.png"
+                    />
+                    <img
+                        class="flag"
+                        v-else-if="film.original_language === 'it'"
+                        src="../assets/img/it.png"
+                    />
+                    <span v-else>{{ film.original_language }}</span>
+                </li>
                 <li>Voto: {{ film.vote_average }}</li>
             </ul>
             <!-- <ul>
@@ -76,4 +89,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped lang="scss">
+.flag {
+    width: 20px;
+    height: 15px;
+}
+</style>
