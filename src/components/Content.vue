@@ -3,6 +3,13 @@
         <Search @performSearch="filterFilm" />
         <div class="film-list">
             <ul v-for="film in filmList" :key="film.id">
+                <img
+                    :src="
+                        'https://image.tmdb.org/t/p/w342' + film.backdrop_path
+                    "
+                    alt=""
+                />
+
                 <li>Titolo: {{ film.title }}</li>
                 <li>Titolo Originale: {{ film.original_title }}</li>
                 <li>
