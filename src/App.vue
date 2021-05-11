@@ -1,5 +1,7 @@
 <template>
-    <Content />
+    <div>
+        <Content />
+    </div>
 </template>
 
 <script>
@@ -12,4 +14,16 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    background: #141414;
+    color: #fff;
+}
+</style>
