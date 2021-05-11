@@ -2,6 +2,7 @@
     <div class="main-content">
         <Search @performSearch="filterFilm" />
         <div class="film-list">
+            <!-- LISTA FILM -->
             <ul v-for="film in filmList" :key="film.id">
                 <img
                     :src="
@@ -26,9 +27,28 @@
                     />
                     <span v-else>{{ film.original_language }}</span>
                 </li>
-                <li>Voto: {{ film.vote_average }}</li>
+                <li>
+                    Voto:
+                    <i
+                        v-for="(n, i) in Math.ceil(film.vote_average / 2)"
+                        :key="i"
+                        class="fas fa-star"
+                    ></i>
+                    <i
+                        v-for="(n, ind) in 5 - Math.ceil(film.vote_average / 2)"
+                        :key="ind"
+                        class="far fa-star"
+                    ></i>
+                </li>
             </ul>
+            <!-- LISTA SERIE TV -->
             <ul v-for="series in seriesList" :key="series.id">
+                <img
+                    :src="
+                        'https://image.tmdb.org/t/p/w342' + series.backdrop_path
+                    "
+                    alt=""
+                />
                 <li>Titolo: {{ series.name }}</li>
                 <li>Titolo Originale: {{ series.original_name }}</li>
                 <li>
@@ -45,7 +65,20 @@
                     />
                     <span v-else>{{ series.original_language }}</span>
                 </li>
-                <li>Voto: {{ series.vote_average }}</li>
+                <li>
+                    Voto:
+                    <i
+                        v-for="(n, i) in Math.ceil(series.vote_average / 2)"
+                        :key="i"
+                        class="fas fa-star"
+                    ></i>
+                    <i
+                        v-for="(n, ind) in 5 -
+                            Math.ceil(series.vote_average / 2)"
+                        :key="ind"
+                        class="far fa-star"
+                    ></i>
+                </li>
             </ul>
         </div>
     </div>
@@ -122,6 +155,10 @@ export default {
                     console.log('Errore', err);
                 });
         },
+        // getVote() {
+        //     axios
+        //     .get(this.apiURL)
+        // },
 
         filterFilm(text) {
             console.log('click', text);
@@ -140,4 +177,8 @@ export default {
     width: 20px;
     height: 15px;
 }
+
+/* .white {
+    color: red;
+} */
 </style>
